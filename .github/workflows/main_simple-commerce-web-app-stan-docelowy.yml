@@ -60,7 +60,12 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_990CE85A417D444FBD146531CA3245AE }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_44CD196D13CE4AE48BDE403120168BD8 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B4E2E53BEA8A4F34A816908CA907B9E0 }}
-
+      - name: Get Azure KV secret
+        uses: Azure/get-keyvault-secrets@v1
+        with: 
+          keyvault: 'keyvaultstandocelowy'
+          secrets: 'database-connection-string-passwrodless'
+        id: mySecret
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -68,5 +73,5 @@ jobs:
           app-name: 'simple-commerce-web-app-stan-docelowy'
           slot-name: 'Production'
           package: .
-          Infrastructure:ConnectionString: $(database-connection-string-passwrodless)
+          Infrastructure:ConnectionString: $(mySecret)
           
