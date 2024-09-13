@@ -44,10 +44,17 @@ else
 var app = builder.Build();
 if (string.IsNullOrEmpty(infrastructureSettings.ConnectionString) == false)
 {
-    using (var scope = app.Services.CreateScope())
+    try
     {
-        var db = scope.ServiceProvider.GetRequiredService<DataContext>();
-        db.Database.Migrate();
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+            db.Database.Migrate();
+        }
+    }
+    catch(Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
     }
 }
 
