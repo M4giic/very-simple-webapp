@@ -61,14 +61,17 @@ jobs:
           keyvault: 'keyvaultstandocelowy'
           secrets: 'database-connection-string-passwrodless'
         id: mySecret
-      - name: Fetch Key Vault Secret
-        id: get_secret
-        run: |
-          secret=$(az keyvault secret show --vault-name keyvaultstandocelowy --name database-connection-string-passwordless --query value -o tsv)
-          echo "DATABASE_CONNECTION_STRING=$secret" >> $GITHUB_ENV
+    
       - name: Set Environment Variable for Web App
+        shell: pwsh
         run: |
-          az webapp config appsettings set --name simple-commerce-web-app-stan-docelowy --resource-group zajecia-azure-stan-docelowy --settings Infrastructure:ConnectionString=${{ env.DATABASE_CONNECTION_STRING }}
+          $secretValue = az keyvault secret show --vault-name keyvaultstandocelowy `
+            --name database-connection-string-passwordless `
+            --query value -o tsv
+          az webapp config appsettings set `
+            --name simple-commerce-web-app-stan-docelowy `
+            --resource-group zajecia-azure-stan-docelowy `
+            --settings Infrastructure:ConnectionString=${{ env.DATABASE_CONNECTION_STRING }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
