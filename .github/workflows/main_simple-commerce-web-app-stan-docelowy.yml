@@ -58,12 +58,16 @@ jobs:
       - name: Set Environment Variable for Web App
         shell: pwsh
         run: |
-          $rawSecretOutput = az keyvault secret show --vault-name keyvaultstandocelowy --name database-connection-string-passwrodless --query value -o json
+          $rawSecretOutput = az keyvault secret show --vault-name keyvaultstandocelowy`
+           --name database-connection-string-passwrodless`
+            --query value -o json
           Write-Output "Fetched raw secret value: $rawSecretOutput"
           $secretValue = $rawSecretOutput | ConvertFrom-Json
           Write-Output "Fetched secret value: $secretValue"
           
-          az webapp config appsettings set --name simple-commerce-web-app-stan-docelowy --resource-group zajecia-azure-stan-docelowy --settings Infrastructure:ConnectionString=$secretValue 
+          az webapp config appsettings set --name simple-commerce-web-app-stan-docelowy`
+           --resource-group zajecia-azure-stan-docelowy`
+            --settings Infrastructure:ConnectionString=$rawSecretOutput 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
