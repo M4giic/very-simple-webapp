@@ -74,6 +74,4 @@ jobs:
           # Infrastructure:ConnectionString: $(mySecret)
       - name: Set Environment Variable for Web App
         run: |
-          az webapp config appsettings set --name simple-commerce-web-app-stan-docelowy \
-            --resource-group zajecia-azure-stan-docelowy \
-            --settings Infrastructure:ConnectionString=${{ steps.keyvault.outputs.database-connection-string-passwordless }}      
+          az webapp config appsettings set --name simple-commerce-web-app-stan-docelowy --resource-group zajecia-azure-stan-docelowy --settings Infrastructure:ConnectionString=${{ steps.keyvault.outputs.database-connection-string-passwordless }}      
