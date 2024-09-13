@@ -14,12 +14,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - task: AzureKeyVault@1
-        inputs:
-          azureSubscription: 'Azure subscription 1'                    ## YOUR_SERVICE_CONNECTION_NAME
-          KeyVaultName: 'keyvaultstandocelowy'                         ## YOUR_KEY_VAULT_NAME
-          SecretsFilter: 'database-connection-string-passwrodless'                          ## YOUR_SECRET_NAME. Default value: *
-          RunAsPreJob: false                                   ## Make the secret(s) available to the whole job
       - uses: actions/checkout@v4
 
       - name: Set up .NET Core
