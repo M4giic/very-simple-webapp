@@ -55,18 +55,11 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_44CD196D13CE4AE48BDE403120168BD8 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B4E2E53BEA8A4F34A816908CA907B9E0 }}
 
-      - name: Get Azure KV secret
-        uses: Azure/get-keyvault-secrets@v1
-        with: 
-          keyvault: 'keyvaultstandocelowy'
-          secrets: 'database-connection-string-passwrodless'
-        id: mySecret
-    
       - name: Set Environment Variable for Web App
         shell: pwsh
         run: |
           $secretValue = az keyvault secret show --vault-name keyvaultstandocelowy `
-            --name database-connection-string-passwordless `
+            --name database-connection-string-passwrodless `
             --query value -o tsv
           az webapp config appsettings set `
             --name simple-commerce-web-app-stan-docelowy `
