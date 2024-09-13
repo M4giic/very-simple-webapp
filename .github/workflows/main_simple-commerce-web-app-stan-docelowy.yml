@@ -59,7 +59,7 @@ jobs:
         shell: pwsh
         run: |
           $rawSecretOutput = az keyvault secret show --vault-name keyvaultstandocelowy `
-            --name database-connection-string-passwrodless `
+            --name database-connection-string-username-password `
             --query value -o json
           Write-Output "Fetched raw secret value: $rawSecretOutput"
           $secretValue = $rawSecretOutput | ConvertFrom-Json
