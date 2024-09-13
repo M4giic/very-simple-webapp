@@ -60,10 +60,16 @@ jobs:
         with: 
           keyvault: 'keyvaultstandocelowy'
           secrets: 'database-connection-string-passwrodless'
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_990CE85A417D444FBD146531CA3245AE }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_44CD196D13CE4AE48BDE403120168BD8 }}
         id: mySecret
-        
+      - name: Fetch Key Vault Secret
+        id: get_secret
+        run: |
+          secret=$(az keyvault secret show --vault-name keyvaultstandocelowy --name database-connection-string-passwordless --query value -o tsv)
+          echo "DATABASE_CONNECTION_STRING=$secret" >> $GITHUB_ENV
+      - name: Set Environment Variable for Web App
+        run: |
+          az webapp config appsettings set --name simple-commerce-web-app-stan-docelowy --resource-group zajecia-azure-stan-docelowy --settings Infrastructure:ConnectionString=${{ env.DATABASE_CONNECTION_STRING }}
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -72,6 +78,3 @@ jobs:
           slot-name: 'Production'
           package: .
           # Infrastructure:ConnectionString: $(mySecret)
-      - name: Set Environment Variable for Web App
-        run: |
-          az webapp config appsettings set --name simple-commerce-web-app-stan-docelowy --resource-group zajecia-azure-stan-docelowy --settings Infrastructure:ConnectionString=${{ steps.keyvault.outputs.database-connection-string-passwordless }}      
